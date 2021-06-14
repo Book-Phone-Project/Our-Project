@@ -20,14 +20,14 @@ typedef struct stackNode* nodeptr;
 void takeDataFromFile(nodeptr *);
 void saveInFile(nodeptr);
 void instructions(void);
-
-
+void addition(nodeptr *);
+void push(nodeptr *, contactInfo);
 void modify(nodeptr *);
-
+void pop(nodeptr *);
 void deleteExistContact(nodeptr *);
 
 
-
+void reset(nodeptr *);
 
 void welcome();
 
@@ -157,98 +157,98 @@ void instructions(void) {
     printf ("Enter Your Choice:             ");
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void addition(nodeptr *top) {
+    contactInfo userInfo;
+    system("cls");
+                system("color 0e");
+                puts("");
+                fflush(stdin);
+                gotoxy(45,2);
+                printf("*>____________ ©Phone Book® ____________<*");
+                gotoxy(57,4);
+                printf("*>> Add Contact <<*");
+                gotoxy(5,6);
+                printf(">> Full Name     : ");
+                gotoxy(24,6);
+                gets(userInfo.fullName);
+                gotoxy(5,8);
+                printf(">> Gender        : ");
+                fflush(stdin);
+                gotoxy(24,8);
+                scanf("%s", userInfo.gender);
+                gotoxy(5,10);
+                printf(">> E-Mail        : ");
+                gotoxy(24,10);
+                scanf("%s", userInfo.mail);
+        while (!email_is_valid(userInfo.mail)) {
+        gotoxy(5,11);
+        printf (">> Sorry, The E-Mail must be Valid Email <<");
+        gotoxy(5,12);
+        printf(">> E-Mail           : ");
+        scanf("%s", userInfo.mail);
+    }
+                gotoxy(5,14);
+                printf(">> Age           : ");
+                scanf("%s", &userInfo.age);
+    while (isString(userInfo.age)) {
+        gotoxy(5,15);
+        printf (">> Sorry, The Age must be Valid Number <<");
+        gotoxy(5,16);
+        printf(">> Age           : ");
+        scanf("%s", userInfo.age);
+    }
+    while (exceed(userInfo.age)) {
+        gotoxy(5,17);
+        printf (">> Sorry, The Age mustn't exceed 150 years <<");
+        gotoxy(5,18);
+        printf(">> Age           : ");
+        scanf("%s", userInfo.age);
+    }
+    while (zerobegin(userInfo.age)) {
+        gotoxy(5,19);
+        printf (">> Sorry, The Age can't be zero and can't begin with zero <<");
+        gotoxy(5,20);
+        printf(">> Age           : ");
+        scanf("%s", userInfo.age);
+    }
+                gotoxy(5,22);
+                printf(">> Country       : ");
+                fflush(stdin);
+                gotoxy(24,22);
+                scanf("%s", userInfo.country);
+                gotoxy(5,24);
+                printf(">> City          : ");
+                fflush(stdin);
+                gotoxy(24,24);
+                scanf("%s", userInfo.city);
+                gotoxy(5,26);
+                printf(">> Phone Number  : ");
+                fflush(stdin);
+                gotoxy(24,26);
+                scanf("%s", userInfo.ph_num);
+    while (isString(userInfo.ph_num)) {
+        gotoxy(5,27);
+        printf (">> Sorry, The Phone Number must be Valid Number <<");
+        gotoxy(5,28);
+        printf(">> Phone Number  : ");
+        fflush(stdin);
+        gotoxy(24,28);
+        scanf("%s", userInfo.ph_num);
+    }
+    push(top, userInfo);
+    gotoxy(56,32);
+    printf("*> Successfully Add <*\n\n");
+    getch();
+    system("cls");
+}
+void push(nodeptr *top, contactInfo userInfo) {
+    nodeptr newnode = (nodeptr)malloc(sizeof(node));
+    newnode->info = userInfo;
+    newnode->next = *top;
+    *top = newnode;
+    saveInFile(*top);
+    return;
+}
 void modify(nodeptr *top) {
     system("color 0c");
     gotoxy(42,2);
@@ -407,13 +407,13 @@ void modify(nodeptr *top) {
     system("cls");
     return;
 }
-
-
-
-
-
-
-
+void pop(nodeptr *top) {
+    nodeptr temp = *top;
+    *top = (*top)->next;
+    free(temp);
+    saveInFile(*top);
+    return;
+}
 void deleteExistContact(nodeptr *top) {
     system("color 09");
     system("cls");
@@ -489,5 +489,70 @@ void deleteExistContact(nodeptr *top) {
     printf("\n\t\t\t\t\t>> The contact has been deleted completely <<");
     getch();
     system("cls");
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void reset(nodeptr *top) {
+    while(!isEmpty(*top))pop(top);
+    saveInFile(*top);
     return;
 }
