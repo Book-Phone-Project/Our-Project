@@ -28,13 +28,13 @@ void deleteExistContact(nodeptr *);
 
 
 void reset(nodeptr *);
-
+bool isEmpty(nodeptr);
 void welcome();
+bool exceed(char []);
+bool zerobegin(char input[]);
 
 
-
-
-
+bool email_is_valid(char []);
 FILE *fptr;
 char fname[] = {"file.txt"};
 void main(void) {
@@ -551,14 +551,14 @@ void display(nodeptr top) {
     puts("");
     return;
 }
-
-
-
-
-
-
-
-
+void reset(nodeptr *top) {
+    while(!isEmpty(*top))pop(top);
+    saveInFile(*top);
+    return;
+}
+bool isEmpty(nodeptr top) {
+    return top == NULL;
+}
 bool isString(char input[]) {
     for (int i = 0; i < strlen(input); i++)
         if (!isdigit(input[i]))return true;
@@ -571,57 +571,28 @@ bool isSubstring(char str1[], char str2[]) {
     if (ref) return true;
     else return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void reset(nodeptr *top) {
-    while(!isEmpty(*top))pop(top);
-    saveInFile(*top);
-    return;
+bool exceed(char input[])
+{
+        if (atoi(input)>150)return true;
+     return false;
+}
+bool zerobegin(char input[])
+{
+        if (input[0]=='0')return true;
+     return false;
+}
+bool email_is_valid(char email[50]){
+    if(!isalpha(email[0])) return 0; //checking if the first character is alpha or not
+    /* variables (at) and (dot) is to determine
+    the position of '@' and '.' in the string email. */
+    int at = -5, dot = -5;
+    for (int i = 0; i < strlen(email); ++i) { // searching for the position of '@' and '.'
+        if(email[i] == '@') at = i;
+        if(email[i] == '.') dot = i;
+        if(email[i] == ' ') return 0;
+    }
+    if((dot - at) == 1 ) return 0;      //  check if there are  characters between'@' and '.'
+    if(at == -5 || dot == -5) return 0; //  check if '@' and '.' are not exist
+    if(at > dot) return 0;              //check if '@' after '.'
+    return (dot != (strlen(email)) - 1); //check if dot at the end of string email
 }
