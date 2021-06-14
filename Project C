@@ -3,11 +3,11 @@
 #include<string.h>
 #include<ctype.h>
 #include<stdbool.h>
-
-
-
-
-
+#include <conio.h>
+#include <windows.h>
+#include <dos.h>
+COORD coord = {0, 0};
+void gotoxy(int, int);
 typedef struct {
     char fullName[50], gender[7], country[15], city[15], mail[50], ph_num[15], age[10];
 }contactInfo;
@@ -17,8 +17,8 @@ struct stackNode {
 };
 typedef struct stackNode node;
 typedef struct stackNode* nodeptr;
-
-
+void takeDataFromFile(nodeptr *);
+void saveInFile(nodeptr);
 void instructions(void);
 
 
@@ -29,14 +29,14 @@ void deleteExistContact(nodeptr *);
 
 
 
+void welcome();
 
 
 
 
 
-
-
-
+FILE *fptr;
+char fname[] = {"file.txt"};
 void main(void) {
     welcome();
     nodeptr top = NULL;
@@ -96,43 +96,43 @@ void main(void) {
         instructions();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void gotoxy(int x, int y) {
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+void welcome(){
+    system("color e9");
+ gotoxy(38,2);
+ printf("**>>>>________  Welcome To Phone Book  ________<<<<**");
+ gotoxy(3,27);
+ printf("**>> Created By [H,K,I,A,M] <<**\n");
+ getch();
+ return 0;
+}
+void takeDataFromFile(nodeptr *top) {
+    contactInfo data;
+    fptr = fopen(fname, "rb");
+    while(1) {
+        fread(&data, sizeof(data), 1, fptr);
+        if(feof(fptr))break;
+        nodeptr newnode = (nodeptr)malloc(sizeof(node));
+        newnode->info = data;
+        newnode->next = *top;
+        *top = newnode;
+    }
+    fclose(fptr);
+    return;
+}
+void saveInFile(nodeptr top) {
+    fptr = fopen(fname, "wb");
+    while (!isEmpty(top)) {
+        fwrite(&(top->info), sizeof(top->info), 1, fptr);
+        top = top->next;
+    }
+    fclose(fptr);
+    return;
+}
 void instructions(void) {
    system("color 0b");
     gotoxy(45,4);
