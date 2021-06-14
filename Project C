@@ -491,6 +491,66 @@ void deleteExistContact(nodeptr *top) {
     system("cls");
     return;
 }
+void research(nodeptr top) {
+    int j = 0;
+    system("color 0d");
+    system("cls");
+    gotoxy(43,2);
+    printf("*>____________ ©Phone Book® ____________<*");
+    gotoxy(52,4);
+    printf("*>> Research Contact <<*");
+    char data[30];
+    gotoxy(2,8);
+    printf(">> Enter The Name or The Phone Number of Contact which you need to search: ");
+    gotoxy(77,8);
+    gets(data);
+    puts("");
+    bool ok = true;
+    while (!isEmpty(top)) {
+        if (isSubstring(top->info.fullName, data) || isSubstring(top->info.ph_num, data)) {
+        j++;
+        printf("\n\n\n[%d]-\n" ,j);
+        printf ("\nFull Name    : %s\n", top->info.fullName);
+        printf ("Gander       : %s\n", top->info.gender);
+        printf ("E-Mail       : %s\n", top->info.mail);
+        printf ("Age          : %u\n", top->info.age);
+        printf ("Country      : %s\n", top->info.country);
+        printf ("City         : %s\n", top->info.city);
+        printf ("Phone number : %s\n", top->info.ph_num);
+            ok = false;
+        }
+        top = top->next;
+    }
+    gotoxy(50,16);
+    if (ok == true)printf(">> The Contact isn't exist <<");
+    getch();
+    system("cls");
+    return;
+}
+void display(nodeptr top) {
+    int z = 0;
+    system("color 0a");
+    system("cls");
+    gotoxy(42,2);
+    printf("*>____________ ©Phone Book® ____________<*");
+    gotoxy(52,4);
+    printf("*>> Display Contacts <<*");
+    while(top != NULL) {
+        z++;
+        printf("\n\n\n[%d]-\n" ,z);
+        printf ("\nFull Name    : %s\n", top->info.fullName);
+        printf ("Gander       : %s\n", top->info.gender);
+        printf ("E-Mail       : %s\n", top->info.mail);
+        printf ("Age          : %u\n", top->info.age);
+        printf ("Country      : %s\n", top->info.country);
+        printf ("City         : %s\n", top->info.city);
+        printf ("Phone number : %s\n", top->info.ph_num);
+        top = top->next;
+        puts("\n");
+    }
+    puts("");
+    return;
+}
 
 
 
@@ -499,9 +559,18 @@ void deleteExistContact(nodeptr *top) {
 
 
 
-
-
-
+bool isString(char input[]) {
+    for (int i = 0; i < strlen(input); i++)
+        if (!isdigit(input[i]))return true;
+    return false;
+}
+bool isSubstring(char str1[], char str2[]) {
+    for (int i = 0; str1[i] != NULL; i++)str1[i] = tolower(str1[i]);
+    for (int i = 0; str2[i] != NULL; i++)str2[i] = tolower(str2[i]);
+    char *ref = strstr(str1, str2);
+    if (ref) return true;
+    else return false;
+}
 
 
 
