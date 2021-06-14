@@ -25,15 +25,15 @@ void push(nodeptr *, contactInfo);
 void modify(nodeptr *);
 void pop(nodeptr *);
 void deleteExistContact(nodeptr *);
-
-
+void research(nodeptr);
+void display(nodeptr);
 void reset(nodeptr *);
 bool isEmpty(nodeptr);
 void welcome();
 bool exceed(char []);
 bool zerobegin(char input[]);
-
-
+bool isString(char []);
+bool isSubstring(char[], char[]);
 bool email_is_valid(char []);
 FILE *fptr;
 char fname[] = {"file.txt"};
