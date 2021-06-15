@@ -503,7 +503,7 @@ void research(nodeptr top) {
     gotoxy(2,8);
     printf(">> Enter The Name or The Phone Number of Contact which you need to search: ");
     gotoxy(77,8);
-    gets(data);
+    scanf("%s",data);
     puts("");
     bool ok = true;
     while (!isEmpty(top)) {
