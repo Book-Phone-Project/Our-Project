@@ -110,27 +110,17 @@ void welcome(){
  getch();
  return 0;
 }
-// Function to get and show data from file...
 void takeDataFromFile(nodeptr *top) {
- //Declare structure of data...
     contactInfo data;
-     //open file to take data from it...
     fptr = fopen(fname, "rb");
-    //infinite loop to receive to my choice... 
     while(1) {
-    //read data from file...
         fread(&data, sizeof(data), 1, fptr);
-        //condition to close if loop went to the end of file...
         if(feof(fptr))break;
-        //make a new node to get data from file to console...
         nodeptr newnode = (nodeptr)malloc(sizeof(node));
-        //newnode will get data from struct (info)...
         newnode->info = data;
-        //make newnode to go to next struct by went to a next top...
         newnode->next = *top;
         *top = newnode;
     }
-    //close file after make everything...
     fclose(fptr);
     return;
 }
@@ -528,7 +518,7 @@ void deleteExistContact(nodeptr *top) {
     system("cls");
     return;
 }
-void research(nodeptr top) {
+void research(nodeptr top) { /// research if contact is existing or not.
     int j = 0;
     system("color 0d");
     system("cls");
@@ -542,8 +532,8 @@ void research(nodeptr top) {
     gotoxy(77,8);
     scanf("%s",data);
     puts("");
-    bool ok = true;
-    while (!isEmpty(top)) {
+    bool ok = true; to indicate if we loop once at least, if loop is not used at all, then the contact is not existed.
+    while (!isEmpty(top)) { /// check if input data is substring of any data in stack or not, therefore output all data of user if condition is true.
         if (isSubstring(top->info.fullName, data) || isSubstring(top->info.ph_num, data)) {
         j++;
         printf("\n\n\n[%d]-\n" ,j);
@@ -556,7 +546,7 @@ void research(nodeptr top) {
         printf ("Phone number : %s\n", top->info.ph_num);
             ok = false;
         }
-        top = top->next;
+        top = top->next; /// till reaching ending of stack!
     }
     gotoxy(50,16);
     if (ok == true)printf(">> The Contact isn't exist <<");
@@ -564,7 +554,7 @@ void research(nodeptr top) {
     system("cls");
     return;
 }
-void display(nodeptr top) {
+void display(nodeptr top) { /// display all data of cantact.
     int z = 0;
     system("color 0a");
     system("cls");
@@ -599,15 +589,15 @@ bool isEmpty(nodeptr top) {
     return top == NULL;
 }
 // chech if The Array contains only digits or not ... 
-bool isString(char input[]) {
+bool isString(char input[]) { 
     for (int i = 0; i < strlen(input); i++)
-        if (!isdigit(input[i]))return true;
+        if (!isdigit(input[i]))return true;/// check if input if all digit or not, if contain one character at least it return that is string, otherwise return that is number
     return false;
 }
-bool isSubstring(char str1[], char str2[]) {
-    for (int i = 0; str1[i] != NULL; i++)str1[i] = tolower(str1[i]);
+bool isSubstring(char str1[], char str2[]) {  /// check if str2 is substring if str1!
+    for (int i = 0; str1[i] != NULL; i++)str1[i] = tolower(str1[i]); /// to convert all character of array to lowercase
     for (int i = 0; str2[i] != NULL; i++)str2[i] = tolower(str2[i]);
-    char *ref = strstr(str1, str2);
+    char *ref = strstr(str1, str2); /// strstr return pointer to character to first character of str1 if str2 is substring of str1, otherwise return pointer to last character in str1 ('\0') => NULL
     if (ref) return true;
     else return false;
 }
