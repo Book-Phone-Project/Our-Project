@@ -159,6 +159,7 @@ void instructions(void) {
 }
 // Recieve Data from the user and check for some Validations on its Info ..
 void addition(nodeptr *top) {
+int k;
 //creat a struct form type contactInfo
     contactInfo userInfo;
     system("cls");
@@ -183,69 +184,84 @@ void addition(nodeptr *top) {
                 printf(">> E-Mail        : ");
                 gotoxy(24,10);
                 scanf("%s", userInfo.mail);
+                k=11;
     // Validation of E-mail ...
         while (!email_is_valid(userInfo.mail)) {
-        gotoxy(5,11);
+        k=k+1;
+        gotoxy(5,k);
         printf (">> Sorry, The E-Mail must be a Valid E-mail Form (Someone@example.com) <<");
-        gotoxy(5,12);
+        gotoxy(5,k+1);
         printf(">> E-Mail           : ");
         scanf("%s", userInfo.mail);
+        k=k+2;
     }
-                gotoxy(5,14);
+    k++;
+                gotoxy(5,k);
                 printf(">> Age           : ");
                 scanf("%s", &userInfo.age);
+                k++;
     // Validation of age ...
    while (isString(userInfo.age) || exceed(userInfo.age) || zerobegin(userInfo.age)) {
+   k++;
             if(isString(userInfo.age)){
-        gotoxy(5,15);
+        gotoxy(5,k);
         printf (">> Sorry, The Age must be Valid Number <<");
-        gotoxy(5,16);
+        gotoxy(5,k+1);
         printf(">> Age           : ");
         scanf("%s", userInfo.age);
+        k++;
             }
             else if(exceed(userInfo.age)){
-        gotoxy(5,17);
+        gotoxy(5,k);
         printf (">> Sorry, The Age mustn't exceed 150 years <<");
-        gotoxy(5,18);
+        gotoxy(5,k+1);
         printf(">> Age           : ");
         scanf("%s", userInfo.age);
+        k++;
             }
             else if(zerobegin(userInfo.age)){
-        gotoxy(5,19);
+        gotoxy(5,k);
         printf (">> Sorry, The Age can't be zero and can't begin with zero <<");
-        gotoxy(5,20);
+        gotoxy(5,k+1);
         printf(">> Age           : ");
         scanf("%s", userInfo.age);
+        k++;
             }
+            k++;
     }
-                gotoxy(5,22);
+    k++;
+                gotoxy(5,k);
                 printf(">> Country       : ");
                 fflush(stdin);
-                gotoxy(24,22);
+                gotoxy(24,k);
                 scanf("%s", userInfo.country);
-                gotoxy(5,24);
+                gotoxy(5,k+2);
                 printf(">> City          : ");
                 fflush(stdin);
-                gotoxy(24,24);
+                gotoxy(24,k+2);
                 scanf("%s", userInfo.city);
-                gotoxy(5,26);
+                gotoxy(5,k+4);
                 printf(">> Phone Number  : ");
                 fflush(stdin);
-                gotoxy(24,26);
+                gotoxy(24,k+4);
                 scanf("%s", userInfo.ph_num);
+                k=k+5;
      // Validation of Phone Number ..
     while (isString(userInfo.ph_num)) {
-        gotoxy(5,27);
+    k++;
+        gotoxy(5,k);
         printf (">> Sorry, The Phone Number must be Valid Number <<");
-        gotoxy(5,28);
+        gotoxy(5,k+1);
         printf(">> Phone Number  : ");
         fflush(stdin);
-        gotoxy(24,28);
+        gotoxy(24,k+1);
         scanf("%s", userInfo.ph_num);
+        k=k+2;
     }
+    k=k+2;
     // call for Push Function to add new Contact..
     push(top, userInfo);
-    gotoxy(56,32);
+    gotoxy(56,k);
     printf("*> Successfully Add <*\n\n");
     getch();
     system("cls");
