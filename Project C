@@ -111,18 +111,23 @@ void welcome(){
  return 0;
 }
 void takeDataFromFile(nodeptr *top) {
-    contactInfo data;
-    fptr = fopen(fname, "rb");
-    while(1) {
-        fread(&data, sizeof(data), 1, fptr);
-        if(feof(fptr))break;
-        nodeptr newnode = (nodeptr)malloc(sizeof(node));
-        newnode->info = data;
-        newnode->next = *top;
-        *top = newnode;
-    }
-    fclose(fptr);
-    return;
+nodeptr top2 = NULL;
+contactInfo data;
+fptr = fopen(fname, "ab+");
+while(1) {
+fread(&data, sizeof(data), 1, fptr);
+if(feof(fptr))break;
+nodeptr newnode = (nodeptr)malloc(sizeof(node));
+newnode->info = data;
+newnode->next = top2;
+top2 = newnode;
+}
+fclose(fptr);
+while(!isEmpty(top2)) {
+push(top, top2->info);
+top2 = top2->next;
+}
+return;
 }
 void saveInFile(nodeptr top) {
     fptr = fopen(fname, "wb");
