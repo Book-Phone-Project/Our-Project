@@ -157,9 +157,12 @@ void instructions(void) {
     printf ("Enter Your Choice:             ");
     return 0;
 }
+// Recieve Data from the user and check for some Validations on its Info ..
 void addition(nodeptr *top) {
+//creat a struct form type contactInfo
     contactInfo userInfo;
     system("cls");
+   // Recieve Data from the user ...
                 system("color 0e");
                 puts("");
                 fflush(stdin);
@@ -180,6 +183,7 @@ void addition(nodeptr *top) {
                 printf(">> E-Mail        : ");
                 gotoxy(24,10);
                 scanf("%s", userInfo.mail);
+    // Validation of E-mail ...
         while (!email_is_valid(userInfo.mail)) {
         gotoxy(5,11);
         printf (">> Sorry, The E-Mail must be a Valid E-mail Form (Someone@example.com) <<");
@@ -190,6 +194,7 @@ void addition(nodeptr *top) {
                 gotoxy(5,14);
                 printf(">> Age           : ");
                 scanf("%s", &userInfo.age);
+    // Validation of age ...
    while (isString(userInfo.age) || exceed(userInfo.age) || zerobegin(userInfo.age)) {
             if(isString(userInfo.age)){
         gotoxy(5,15);
@@ -228,6 +233,7 @@ void addition(nodeptr *top) {
                 fflush(stdin);
                 gotoxy(24,26);
                 scanf("%s", userInfo.ph_num);
+     // Validation of Phone Number ..
     while (isString(userInfo.ph_num)) {
         gotoxy(5,27);
         printf (">> Sorry, The Phone Number must be Valid Number <<");
@@ -237,12 +243,14 @@ void addition(nodeptr *top) {
         gotoxy(24,28);
         scanf("%s", userInfo.ph_num);
     }
+    // call for Push Function to add new Contact..
     push(top, userInfo);
     gotoxy(56,32);
     printf("*> Successfully Add <*\n\n");
     getch();
     system("cls");
 }
+   // Push Fuction to add new Contact ..
 void push(nodeptr *top, contactInfo userInfo) {
     nodeptr newnode = (nodeptr)malloc(sizeof(node));
     newnode->info = userInfo;
@@ -409,6 +417,7 @@ void modify(nodeptr *top) {
     system("cls");
     return;
 }
+// Deletion of the Last node ....
 void pop(nodeptr *top) {
     nodeptr temp = *top;
     *top = (*top)->next;
@@ -553,14 +562,17 @@ void display(nodeptr top) {
     puts("");
     return;
 }
+// Resetting All the data (Restart the Programm)..
 void reset(nodeptr *top) {
     while(!isEmpty(*top))pop(top);
     saveInFile(*top);
     return;
 }
+// check if The Stack is Empty or not
 bool isEmpty(nodeptr top) {
     return top == NULL;
 }
+// chech if The Array contains only digits or not ... 
 bool isString(char input[]) {
     for (int i = 0; i < strlen(input); i++)
         if (!isdigit(input[i]))return true;
@@ -573,11 +585,13 @@ bool isSubstring(char str1[], char str2[]) {
     if (ref) return true;
     else return false;
 }
+// check on maximum Value of age....
 bool exceed(char input[])
 {
         if (atoi(input)>150)return true;
      return false;
 }
+// check on the beginning of the number not to be (0) ....
 bool zerobegin(char input[])
 {
         if (input[0]=='0')return true;
