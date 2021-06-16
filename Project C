@@ -124,18 +124,12 @@ void takeDataFromFile(nodeptr *top) {
     fclose(fptr);
     return;
 }
-// Function to save data to file...
 void saveInFile(nodeptr top) {
-//open file to save data to it...
     fptr = fopen(fname, "wb");
-    //infinite loop until top=Null...
     while (!isEmpty(top)) {
-     //write data into the file...
         fwrite(&(top->info), sizeof(top->info), 1, fptr);
-         //make top = next element in stack to save it in the file...
         top = top->next;
     }
-    //close file after make everything...
     fclose(fptr);
     return;
 }
@@ -538,7 +532,7 @@ void research(nodeptr top) { /// research if contact is existing or not.
     gotoxy(77,8);
     scanf("%s",data);
     puts("");
-    bool ok = true; to indicate if we loop once at least, if loop is not used at all, then the contact is not existed.
+    bool ok = true; ///to indicate if we loop once at least, if loop is not used at all, then the contact is not existed.
     while (!isEmpty(top)) { /// check if input data is substring of any data in stack or not, therefore output all data of user if condition is true.
         if (isSubstring(top->info.fullName, data) || isSubstring(top->info.ph_num, data)) {
         j++;
