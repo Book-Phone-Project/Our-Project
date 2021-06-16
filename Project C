@@ -182,7 +182,7 @@ void addition(nodeptr *top) {
                 scanf("%s", userInfo.mail);
         while (!email_is_valid(userInfo.mail)) {
         gotoxy(5,11);
-        printf (">> Sorry, The E-Mail must be Valid Email <<");
+        printf (">> Sorry, The E-Mail must be a Valid E-mail Form (Someone@example.com) <<");
         gotoxy(5,12);
         printf(">> E-Mail           : ");
         scanf("%s", userInfo.mail);
