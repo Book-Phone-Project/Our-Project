@@ -250,12 +250,12 @@ void addition(nodeptr *top) {
     getch();
     system("cls");
 }
-   // Push Fuction to add new Contact ..
+ // Push Fuction to add new Contact ..
 void push(nodeptr *top, contactInfo userInfo) {
     nodeptr newnode = (nodeptr)malloc(sizeof(node));
     newnode->info = userInfo;
     newnode->next = *top;
-    *top = newnode;
+    *top = newnode;    // store the address of the newnode in top
     saveInFile(*top);
     return;
 }
@@ -568,7 +568,7 @@ void reset(nodeptr *top) {
     saveInFile(*top);
     return;
 }
-// check if The Stack is Empty or not
+// check if (The Stack) is Empty or not
 bool isEmpty(nodeptr top) {
     return top == NULL;
 }
@@ -585,7 +585,7 @@ bool isSubstring(char str1[], char str2[]) {
     if (ref) return true;
     else return false;
 }
-// check on maximum Value of age....
+// check on maximum Value of age not to exceed 150....
 bool exceed(char input[])
 {
         if (atoi(input)>150)return true;
@@ -597,6 +597,7 @@ bool zerobegin(char input[])
         if (input[0]=='0')return true;
      return false;
 }
+// Validate on the e-mail of the User
 bool email_is_valid(char email[50]){
     if(!isalpha(email[0])) return 0; //checking if the first character is alpha or not
     /* variables (at) and (dot) is to determine
