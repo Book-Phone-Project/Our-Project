@@ -318,10 +318,12 @@ void welcome(){
  getch();
  return 0;
 }
+// function to read stack from file
 void takeDataFromFile(nodeptr *top) {
 nodeptr top2 = NULL;
 contactInfo data;
 fptr = fopen(fname, "ab+");
+// we first read data from file and store it in a stack with (top2)
 while(1) {
 fread(&data, sizeof(data), 1, fptr);
 if(feof(fptr))break;
@@ -331,6 +333,7 @@ newnode->next = top2;
 top2 = newnode;
 }
 fclose(fptr);
+//then we copy data from stack1 (top2) to stack2 (top2) to inverse the order of nodes in the stack
 while(!isEmpty(top2)) {
 push(top, top2->info);
 top2 = top2->next;
