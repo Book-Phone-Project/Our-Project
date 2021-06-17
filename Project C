@@ -130,24 +130,31 @@ void main(void) {
         instructions();
     }
 }
+/* Functions that manage us to have multiple users
+ Sign Up -sign In - checkValidatio */
+
 void signUp() {
     int g;
     system("color 0b");
     system("cls");
-    register_info data;
+    register_info data;// Creat a struct type register_info
     gotoxy(43,2);
     printf("*>____________ ©Phone Book® ____________<*");
     gotoxy(56,4);
     printf("**>> Sign up <<**");
     gotoxy(0,8);
+/* Make interaction with the user and take his data to 
+    creat an account for him */
     printf(">> Enter Your User Name: ");
     fflush(stdin);
+   // Validation of UserName
     do {
         scanf("%s",data.username);
     }while(checkValidation(data.username, 1));
     printf("\n>> Enter The Password: ");
     fflush(stdin);
     gets(data.pass);
+    // Validation of Password
     while(!pass_valid(data.pass)){
       printf("\n>> Enter The Password Again: ");
       gets(data.pass);
@@ -166,6 +173,7 @@ void signUp() {
     scanf("%s", data.gender);
     printf("\n>> Enter Your E-Mail: ");
     scanf("%s", data.mail);
+// Validation on E-mail
     while(checkValidation(data.mail, 2) || !email_is_valid(data.mail)){
             if(checkValidation(data.mail, 2)){
         printf("\n>> Enter Your Valid E-Mail: ");
@@ -318,12 +326,10 @@ void welcome(){
  getch();
  return 0;
 }
-// function to read stack from file
 void takeDataFromFile(nodeptr *top) {
 nodeptr top2 = NULL;
 contactInfo data;
 fptr = fopen(fname, "ab+");
-// we first read data from file and store it in a stack with (top2)
 while(1) {
 fread(&data, sizeof(data), 1, fptr);
 if(feof(fptr))break;
@@ -333,7 +339,6 @@ newnode->next = top2;
 top2 = newnode;
 }
 fclose(fptr);
-//then we copy data from stack1 (top2) to stack2 (top2) to inverse the order of nodes in the stack
 while(!isEmpty(top2)) {
 push(top, top2->info);
 top2 = top2->next;
@@ -854,21 +859,22 @@ bool email_is_valid(char email[50]){
     if(at > dot) return 0;              //check if '@' after '.'
     return (dot != (strlen(email)) - 1); //check if dot at the end of string email
 }
+// Validation of Password...
 bool pass_valid(char a[])
 {
     int i,m=0,c=0,s=0,d=0,p=0,w=0,l=0;
     for(i=0;i<strlen(a);i++)
     {
-            if(strlen(a)<8) l++;
-            if(a[i]>='A'&&a[i]<='Z')c++;
-            if(a[i]>='a'&&a[i]<='z')s++;
-            if(a[i]>='0'&&a[i]<='9') d++;
+            if(strlen(a)<8) l++;// Must be at least eight characters 
+            if(a[i]>='A'&&a[i]<='Z')c++; // Password Must contain at least oneUppercase character
+            if(a[i]>='a'&&a[i]<='z')s++; // Password Must contain at least OneLowerCase character
+            if(a[i]>='0'&&a[i]<='9') d++; // Password Must contain at least one digit
             if(a[i]=='#'||a[i]=='*'||a[i]=='^'||
             a[i]=='$'||a[i]=='@'||a[i]=='%'||a[i]==')'
             ||a[i]=='(' ||a[i]=='=' ||a[i]=='!'||a[i]=='+'||
             a[i]=='-'||a[i]=='_'||a[i]=='/'
             ||a[i]=='}'||a[i]=='\\'||a[i]=='{'||a[i]=='&') p++;
-            if(a[i]==' ') w++;
+            if(a[i]==' ') w++;// Password Must contain at least one SpecialCase Character
     }
     if(l!=0)
     {
