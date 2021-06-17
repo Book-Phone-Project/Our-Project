@@ -495,156 +495,161 @@ void modify(nodeptr *top) {
     gotoxy(52,4);
     printf("*>> Modify Contact <<*");
     nodeptr temp = *top, tomodifyPtr;
-    int cnt = 0, choice;
+    int cnt = 1, choice, i = 0;
     char name[30];
+    bool ok = false;
     gotoxy(2,8);
     printf(">> Enter The Name of Contact which you need to modify: ");
     fflush(stdin);
     gotoxy(57,8);
-    gets(name);
-    struct stackCpy {
-        nodeptr ptrData;
-        struct stackCpy* next;
-    };
-    typedef struct stackCpy cpy;
-    typedef struct stackCpy* cpyptr;
-    cpyptr topCpy = NULL;
+    scanf("%s",name);
     while(!isEmpty(temp)) {
-        if (isSubstring(temp->info.fullName, name)) {
-            cnt++;
-            cpyptr newnode = (cpyptr)malloc(sizeof(cpy));
-            newnode->ptrData = temp;
-            newnode->next = topCpy;
-            topCpy = newnode;
-        }
-        temp = temp->next;
-    }
-    if (cnt == 0) {
+         if (isSubstring(temp->info.fullName, name) && i == 0)tomodifyPtr = temp, i++;
+         else if (isSubstring(temp->info.fullName, name) && i == 1) {
+         printf("[%d]-\n", 1);
+         printf ("\tFull Name   :- %s\n", tomodifyPtr->info.fullName);
+         printf ("\tGender      :- %s\n", tomodifyPtr->info.gender);
+         printf ("\tE-Mail      :- %s\n", tomodifyPtr->info.mail);
+         printf ("\tAge         :- %s\n", tomodifyPtr->info.age);
+         printf ("\tCountry     :- %s\n", tomodifyPtr->info.country);
+         printf ("\tCity        :- %s\n", tomodifyPtr->info.city);
+         printf ("\tPhone Number:- %s\n", tomodifyPtr->info.ph_num);
+         puts("\n");
+         ok = true;
+  }
+    if(isSubstring(temp->info.fullName, name) && ok) {
+     printf("[%d]-\n", 1 + (i++));
+     printf ("\tFull Name   :- %s\n", temp->info.fullName);
+     printf ("\tGender      :- %s\n", temp->info.gender);
+     printf ("\tE-Mail      :- %s\n", temp->info.mail);
+     printf ("\tAge         :- %s\n", temp->info.age);
+     printf ("\tCountry     :- %s\n", temp->info.country);
+     printf ("\tCity        :- %s\n", temp->info.city);
+     printf ("\tPhone Number:- %s\n", temp->info.ph_num);
+     puts("\n");
+  }
+     temp = temp->next;
+  }
+    if (i == 0) {
         gotoxy(2,10);
         printf(">> Not Found << ");
         getch();
         system("cls");
         return;
-    }
-    else if (cnt != 1) {
-        cpyptr tempCpy = topCpy;
-        gotoxy(2,10);
-        printf(">> Please, Choose name from the Following Contacts: \n\n");
-        for (int i = 0; i < cnt; i++) {
-            printf("[%d]-\n", i + 1);
-            printf ("\tFull Name   :- %s\n", tempCpy->ptrData->info.fullName);
-            printf ("\tGender      :- %s\n", tempCpy->ptrData->info.gender);
-            printf ("\tE-Mail      :- %s\n", tempCpy->ptrData->info.mail);
-            printf ("\tAge         :- %s\n", tempCpy->ptrData->info.age);
-            printf ("\tCountry     :- %s\n", tempCpy->ptrData->info.country);
-            printf ("\tCity        :- %s\n", tempCpy->ptrData->info.city);
-            printf ("\tPhone Number:- %s\n", tempCpy->ptrData->info.ph_num);
-            tempCpy = tempCpy->next;
-            puts("\n");
-        }
-        printf("Enter your Choice: ");
+  }
+    else if (i != 1) {
+        temp = *top;
+        printf("\n>> Please, Choose one from the Following Contacts: ");
         scanf("%d", &choice);
-        tempCpy = topCpy;
-        for (int i = 0; i < choice - 1 ; i++) tempCpy = tempCpy->next;
-        tomodifyPtr = tempCpy->ptrData;
-    }
-    else tomodifyPtr = topCpy->ptrData;
-    printf("\nThe Exist Contact is:   \n\n");
-    printf ("\tFull Name   :- %s\n", tomodifyPtr->info.fullName);
-    printf ("\tGender      :- %s\n", tomodifyPtr->info.gender);
-    printf ("\tE-Mail      :- %s\n", tomodifyPtr->info.mail);
-    printf ("\tAge         :- %s\n", tomodifyPtr->info.age);
-    printf ("\tCountry     :- %s\n", tomodifyPtr->info.country);
-    printf ("\tCity        :- %s\n", tomodifyPtr->info.city);
-    printf ("\tPhone Number:- %s\n", tomodifyPtr->info.ph_num);
-    puts("\n");
-    int subChoice;
+      while(choice <=0 || choice > i){
+           printf("\n>> Please Enter a Valid Choice:   ");
+           scanf("%d", &choice);
+  }
+      while (1) {
+        if (isSubstring(temp->info.fullName, name))
+             if (cnt == choice) break;
+             else cnt++;
+        temp = temp->next;
+}
+}
+    else temp = tomodifyPtr;
+        printf ("\nThe Exist Contact is: \n\n");
+        printf ("\tFull Name   :- %s\n", temp->info.fullName);
+        printf ("\tGender      :- %s\n", temp->info.gender);
+        printf ("\tE-Mail      :- %s\n", temp->info.mail);
+        printf ("\tAge         :- %s\n", temp->info.age);
+        printf ("\tCountry     :- %s\n", temp->info.country);
+        printf ("\tCity        :- %s\n", temp->info.city);
+        printf ("\tPhone Number:- %s\n", temp->info.ph_num);
+        puts("\n");
+        int subChoice;
     do{
-         printf ("\nEnter Your choice:\n"
-            "   [1]- to modify The Name\n"
-            "   [2]- to modify The Gender\n"
-            "   [3]- to modify The Mail\n"
-            "   [4]- to modify The Age\n"
-            "   [5]- to modify The Country\n"
-            "   [6]- to modify The City\n"
-            "   [7]- to modify The Phone Number\n"
-            "   [8]- to modify The Entire Contact\n"
-            "   [0]- to save\n");
+       printf ("\nEnter Your choice:\n"
+               " [1]- to modify The Name\n"
+               " [2]- to modify The Gender\n"
+               " [3]- to modify The Mail\n"
+               " [4]- to modify The Age\n"
+               " [5]- to modify The Country\n"
+               " [6]- to modify The City\n"
+               " [7]- to modify The Phone Number\n"
+               " [8]- to modify The Entire Contact\n"
+               " [0]- to save\n");
             scanf("%d" ,&subChoice);
-        while (subChoice > 8 || subChoice < 0 ){
-            printf("\n>>Enter a valid choice from '0 To 8'<<\n");
-            scanf("%d", &subChoice);
-        }
-        switch(subChoice) {
-            case 1:
-                printf ("\nEnter The New Name: ");
-                fflush(stdin);
-                gets(tomodifyPtr->info.fullName);
-                break;
-            case 2:
-                printf ("\nEnter The New Gender:");
-                fflush(stdin);
-                gets(tomodifyPtr->info.gender);
-                break;
-            case 3:
-                printf ("\nEnter The New E-Mail:");
-                fflush(stdin);
-                gets(tomodifyPtr->info.mail);
-                break;
-            case 4:
-                printf ("\nEnter The New Age:");
-                fflush(stdin);
-                scanf("%s", tomodifyPtr->info.age);
-                break;
-            case 5:
-                printf ("\nEnter The New Country:");
-                fflush(stdin);
-                gets(tomodifyPtr->info.country);
-                break;
-            case 6:
-                printf ("\nEnter The New City:");
-                fflush(stdin);
-                gets(tomodifyPtr->info.city);
-                break;
-            case 7:
-                printf ("\nEnter The New Phone Number:");
-                fflush(stdin);
-                scanf("%s", tomodifyPtr->info.ph_num);
-                break;
-            case 8:
-                fflush(stdin);
-                printf("\nEnter The New Name          :\n");
-                gets(tomodifyPtr->info.fullName);
-                printf ("\nEnter The New Gender       :\n");
-                fflush(stdin);
-                scanf("%s", tomodifyPtr->info.gender);
-                printf ("\nEnter The New Mail         :\n");
-                scanf("%s", tomodifyPtr->info.mail);
-                printf ("\nEnter The New Age          :\n");
-                scanf("%s", tomodifyPtr->info.age);
-                printf ("\nEnter The New Country      :\n");
-                fflush(stdin);
-                scanf("%s", tomodifyPtr->info.country);
-                printf ("\nEnter The New city         :\n");
-                scanf("%s", tomodifyPtr->info.city);
-                printf ("\nEnter The New Phone Number :\n");
-                scanf("%s", tomodifyPtr->info.ph_num);
-                break;
-        }
-    } while (subChoice != 0);
-    saveInFile(*top);
-    printf("\n>> The Contact after modifying:  \n\n");
-    printf ("\tFull Name   :- %s\n", tomodifyPtr->info.fullName);
-    printf ("\tGender      :- %s\n", tomodifyPtr->info.gender);
-    printf ("\tE-Mail      :- %s\n", tomodifyPtr->info.mail);
-    printf ("\tAge         :- %s\n", tomodifyPtr->info.age);
-    printf ("\tCountry     :- %s\n", tomodifyPtr->info.country);
-    printf ("\tCity        :- %s\n", tomodifyPtr->info.city);
-    printf ("\tPhone Number:- %s\n", tomodifyPtr->info.ph_num);
-    puts("\n");
-    getch();
-    system("cls");
-    return;
+     while (subChoice > 8 || subChoice < 0 ){
+          printf("\n>>Enter a valid choice from '0 To 8'<<\n");
+          scanf("%d", &subChoice);
+  }
+          switch(subChoice) {
+          case 1:
+          printf ("\nEnter The New Name: ");
+          fflush(stdin);
+          gets(temp->info.fullName);
+          break;
+          case 2:
+          printf ("\nEnter The New Gender:");
+          fflush(stdin);
+          gets(temp->info.gender);
+          break;
+          case 3:
+          printf ("\nEnter The New E-Mail:");
+          fflush(stdin);
+          gets(temp->info.mail);
+          break;
+          case 4:
+          printf ("\nEnter The New Age:");
+          fflush(stdin);
+          scanf("%s", temp->info.age);
+          break;
+          case 5:
+          printf ("\nEnter The New Country:");
+          fflush(stdin);
+          gets(temp->info.country);
+          break;
+          case 6:
+          printf ("\nEnter The New City:");
+          fflush(stdin);
+          gets(temp->info.city);
+          break;
+          case 7:
+          printf ("\nEnter The New Phone Number:");
+          fflush(stdin);
+          scanf("%s", temp->info.ph_num);
+          break;
+          case 8:
+          fflush(stdin);
+          printf("\nEnter The New Name :\n");
+          gets(temp->info.fullName);
+          printf ("\nEnter The New Gender :\n");
+          fflush(stdin);
+          scanf("%s", temp->info.gender);
+          printf ("\nEnter The New Mail :\n");
+          scanf("%s", temp->info.mail);
+          printf ("\nEnter The New Age :\n");
+          scanf("%s", temp->info.age);
+          printf ("\nEnter The New Country :\n");
+          fflush(stdin);
+          scanf("%s", temp->info.country);
+          printf ("\nEnter The New city :\n");
+          scanf("%s", temp->info.city);
+          printf ("\nEnter The New Phone Number :\n");
+          scanf("%s", temp->info.ph_num);
+          break;
+ }
+ } while (subChoice != 0);
+         saveInFile(*top);
+         printf("\n>> The Contact after modifying: \n\n");
+         printf ("\tFull Name   :- %s\n", temp->info.fullName);
+         printf ("\tGender      :- %s\n", temp->info.gender);
+         printf ("\tE-Mail      :- %s\n", temp->info.mail);
+         printf ("\tAge         :- %s\n", temp->info.age);
+         printf ("\tCountry     :- %s\n", temp->info.country);
+         printf ("\tCity        :- %s\n", temp->info.city);
+         printf ("\tPhone Number:- %s\n", temp->info.ph_num);
+         puts("\n");
+         printf("\n\n>> Modify Done Successfully <<");
+         getch();
+         system("cls");
+         return;
 }
 // Deletion of the Last node ....
 void pop(nodeptr *top) {
