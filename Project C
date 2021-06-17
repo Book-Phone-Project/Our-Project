@@ -9,6 +9,9 @@
 COORD coord = {0, 0};
 void gotoxy(int, int);
 typedef struct {
+    char username[30], pass[30], confPass[30], gender[7], country[15], city[15], mail[50], ph_num[15], age[10], id[15];
+}register_info;
+typedef struct {
     char fullName[50], gender[7], country[15], city[15], mail[50], ph_num[15], age[10];
 }contactInfo;
 struct stackNode {
@@ -17,6 +20,9 @@ struct stackNode {
 };
 typedef struct stackNode node;
 typedef struct stackNode* nodeptr;
+void signUp(void);
+void signIn(void);
+bool checkValidation(char [], int);
 void takeDataFromFile(nodeptr *);
 void saveInFile(nodeptr);
 void instructions(void);
@@ -35,12 +41,38 @@ bool zerobegin(char input[]);
 bool isString(char []);
 bool isSubstring(char[], char[]);
 bool email_is_valid(char []);
-bool pass_valid(char []);
 FILE *fptr;
 char fname[] = {"file.txt"};
 void main(void) {
     welcome();
     nodeptr top = NULL;
+    int x ,p;
+    gotoxy(53,6);
+    printf(">> Enter 1 to sign up");
+    gotoxy(53,8);
+    printf(">> Enter 2 to sign in");
+    gotoxy(53,10);
+    printf(">> Enter your choice:");
+    gotoxy(75,10);
+    p=12;
+    scanf("%d", &x);
+    while(1){
+       if (x == 1){
+            signUp();
+            break;
+       }
+       else if(x == 2){
+            signIn();
+            break;
+       }
+       else{
+        gotoxy(53,p);
+       printf(">> Enter a Valid Choice: ");
+       gotoxy(78,p);
+       scanf("%d", &x);
+       p=p+2;
+       }
+    }
     takeDataFromFile(&top);
     char input[20];
     instructions();
@@ -96,6 +128,180 @@ void main(void) {
         }
         instructions();
     }
+}
+void signUp() {
+    int g;
+    system("color 0b");
+    system("cls");
+    register_info data;
+    gotoxy(43,2);
+    printf("*>____________ ©Phone Book® ____________<*");
+    gotoxy(56,4);
+    printf("**>> Sign up <<**");
+    gotoxy(0,8);
+    printf(">> Enter Your User Name: ");
+    fflush(stdin);
+    do {
+        scanf("%s",data.username);
+    }while(checkValidation(data.username, 1));
+    printf("\n>> Enter The Password: ");
+    fflush(stdin);
+    gets(data.pass);
+    while(!pass_valid(data.pass)){
+      printf("\n>> Enter The Password Again: ");
+      gets(data.pass);
+    }
+    printf(">> Enter The Confirm Password: ");
+    scanf("%s", data.confPass);
+    while (1) {
+        if (strcmp(data.confPass, data.pass) != 0){;
+        printf("\n>> The Confirm Password doesn't match, please try again: ");
+        printf("\n>> Enter The Confirm Password: ");
+        scanf("%s", data.confPass);
+        }
+        else break;
+    }
+    printf("\n>> Enter Your Gender: ");
+    scanf("%s", data.gender);
+    printf("\n>> Enter Your E-Mail: ");
+    scanf("%s", data.mail);
+    while(checkValidation(data.mail, 2) || !email_is_valid(data.mail)){
+            if(checkValidation(data.mail, 2)){
+        printf("\n>> Enter Your Valid E-Mail: ");
+        scanf("%s", data.mail);
+            }
+            else if(!email_is_valid(data.mail)){
+        printf ("\n>> Sorry, Enter a Valid E-Mail Form (Someone@example.com) <<");
+        printf("\n>> Enter Your E-Mail Again:  ");
+        scanf("%s", data.mail);
+    }
+    }
+    printf("\n>> Enter your Age: ");
+    scanf("%s", data.age);
+        while (isString(data.age) || exceed(data.age) || zerobegin(data.age)) {
+            if(isString(data.age)){
+        printf ("\n>> Sorry, The Age must be Valid Number <<");
+        printf("\n>> Enter your Age Again: ");
+        scanf("%s", data.age);
+            }
+        else if(exceed(data.age)){
+        printf ("\n>> Sorry, The Age mustn't exceed 150 years <<");
+         printf("\n>> Enter your Age Again: ");
+        scanf("%s", data.age);
+            }
+            else if(zerobegin(data.age)){
+        printf ("\n>> Sorry, The Age can't be zero and can't begin with zero <<");
+        printf("\n>> Enter your Age Again: ");
+        scanf("%s", data.age);
+            }
+    }
+    printf("\n>> Enter your Country: ");
+    scanf("%s", data.country);
+    printf("\n>> Enter Your City: ");
+    scanf("%s", data.city);
+    printf("\n>> Enter Your Phone Number: ");
+    scanf("%s", data.ph_num);
+    while (isString(data.ph_num) || checkValidation(data.ph_num, 3)) {
+            if(isString(data.ph_num)){
+        printf ("\n>> Sorry, The Phone Number must be Valid Number <<");
+        printf("\n>> Phone Number  : ");
+        fflush(stdin);
+        scanf("%s", data.ph_num);
+            }
+            else if(checkValidation(data.ph_num, 3)){
+        printf("\n>> Enter Your Valid Phone: ");
+        scanf("%s", data.ph_num);
+            }
+        }
+    strcpy(data.id, "");
+    strncat(data.id, data.age, 2);
+    strncat(data.id, data.ph_num, 11);
+    fptr = fopen(fname, "ab+");
+    fwrite(&data, sizeof(data), 1, fptr);
+    fclose(fptr);
+    strcpy(fname, data.id);
+    strcat(fname, ".txt");
+    system("cls");
+    system("color e9");
+    gotoxy(35,12);
+    printf("**>>______Welcome To Our Program Book Phone______<<**");
+    getch();
+    system("cls");
+    return;
+}
+bool checkValidation(char str[], int x) {
+    register_info data;
+    fptr = fopen(fname, "ab+");
+    while(1) {
+        fread(&data, sizeof(data), 1, fptr);
+        if(feof(fptr))return false;
+        if (x == 1) {
+            if(!strcmp(data.username, str)) {
+            printf("\n>> This User name Exist, please Enter another one");
+            printf("\n>> Enter User name again:");
+            return true;
+            }
+        }
+        if (x == 2) {
+            if(!strcmp(data.mail, str)) {
+            printf("\n>> This Email Exist, please Enter another one");
+            return true;
+            }
+        }
+        if (x == 3) {
+            if(!strcmp(data.ph_num, str)) {
+            printf("\n>> This phone number Exist, please Enter another one");
+            return true;
+            }
+        }
+    }
+}
+void signIn(void) {
+    system("color 0b");
+    system("cls");
+    register_info data;
+    char name[30], pass[30];
+    bool ok;
+    gotoxy(43,2);
+    printf("*>____________ ©Phone Book® ____________<*");
+    gotoxy(56,4);
+    printf("**>> Sign in <<**");
+    gotoxy(0,8);
+    printf(">> Enter Your User Name: ");
+    fflush(stdin);
+    scanf("%s",name);
+    printf("\n>> Enter The Password: ");
+    scanf("%s", pass);
+    fptr = fopen(fname, "ab+");
+    while(1) {
+        fread(&data, sizeof(data), 1, fptr);
+        if(feof(fptr)) {
+            ok = false;
+            break;
+        }
+        if (!strcmp(data.username, name) && !strcmp(data.pass, pass)) {
+            ok = true;
+            break;
+        }
+    }
+    if (ok) {
+        strcpy(fname, data.id);
+        strcat(fname, ".txt");
+        system("cls");
+        system("color e9");
+        gotoxy(35,12);
+        printf("**>>______Welcome To Our Program Book Phone______<<**");
+        getch();
+        system("cls");
+    }
+    else {
+        int choice;
+        printf("\n>> your Info isn't valid \n>> Enter 1 if you need to log in again or Enter 2 to create an account\n>> Enter your Choice:");
+        scanf("%d", &choice);
+        if (choice == 1)signIn();
+        if (choice == 2)signUp();
+    }
+    return;
 }
 void gotoxy(int x, int y) {
     coord.X = x;
@@ -455,61 +661,65 @@ void deleteExistContact(nodeptr *top) {
     gotoxy(53,4);
     printf("*>> Delete Contact <<*");
     nodeptr temp = *top, toDeletePtr;
-    int cnt = 0, choice;
+    int cnt = 1, choice, i = 0;
     char name[30];
+    bool ok = false;
     gotoxy(2,8);
     printf(">> Enter The Name of Contact which you need to delete: ");
     fflush(stdin);
-    gets(name);
-    struct stackCpy {
-        nodeptr ptrData;
-        struct stackCpy* next;
-    };
-    typedef struct stackCpy cpy;
-    typedef struct stackCpy* cpyptr;
-    cpyptr topCpy = NULL;
-    while(!isEmpty(temp)) {
-        if (isSubstring(temp->info.fullName, name)) {
-            cnt++;
-            cpyptr newnode = (cpyptr)malloc(sizeof(cpy));
-            newnode->ptrData = temp;
-            newnode->next = topCpy;
-            topCpy = newnode;
-        }
-        temp = temp->next;
-    }
-    if (cnt == 0) {
+    scanf("%s",name);
+   while(!isEmpty(temp)) {
+         if (isSubstring(temp->info.fullName, name) && i == 0)toDeletePtr = temp, i++;
+         else if (isSubstring(temp->info.fullName, name) && i == 1) {
+         printf("[%d]-\n", 1);
+         printf ("\tFull Name   :- %s\n", toDeletePtr->info.fullName);
+         printf ("\tGender      :- %s\n", toDeletePtr->info.gender);
+         printf ("\tE-Mail      :- %s\n", toDeletePtr->info.mail);
+         printf ("\tAge         :- %s\n", toDeletePtr->info.age);
+         printf ("\tCountry     :- %s\n", toDeletePtr->info.country);
+         printf ("\tCity        :- %s\n", toDeletePtr->info.city);
+         printf ("\tPhone Number:- %s\n", toDeletePtr->info.ph_num);
+         puts("\n");
+         ok = true;
+  }
+    if(isSubstring(temp->info.fullName, name) && ok) {
+     printf("[%d]-\n", 1 + (i++));
+     printf ("\tFull Name   :- %s\n", temp->info.fullName);
+     printf ("\tGender      :- %s\n", temp->info.gender);
+     printf ("\tE-Mail      :- %s\n", temp->info.mail);
+     printf ("\tAge         :- %s\n", temp->info.age);
+     printf ("\tCountry     :- %s\n", temp->info.country);
+     printf ("\tCity        :- %s\n", temp->info.city);
+     printf ("\tPhone Number:- %s\n", temp->info.ph_num);
+     puts("\n");
+  }
+     temp = temp->next;
+  }
+    if (i == 0) {
         gotoxy(2,10);
-        printf(">> Contact Not Found << ");
+        printf(">> Not Found << ");
         getch();
         system("cls");
         return;
-    }
-    else if (cnt != 1) {
-        cpyptr tempCpy = topCpy;
-        gotoxy(2,10);
-        printf(">> Please, Choose name from the Following Contacts:\n\n");
-        for (int i = 0; i < cnt; i++) {
-            printf("[%d]-\n", i + 1);
-            printf ("\tFull Name   :- %s\n", tempCpy->ptrData->info.fullName);
-            printf ("\tGender      :- %s\n", tempCpy->ptrData->info.gender);
-            printf ("\tE-Mail      :- %s\n", tempCpy->ptrData->info.mail);
-            printf ("\tAge         :- %s\n", tempCpy->ptrData->info.age);
-            printf ("\tCountry     :- %s\n", tempCpy->ptrData->info.country);
-            printf ("\tCity        :- %s\n", tempCpy->ptrData->info.city);
-            printf ("\tPhone Number:- %s\n", tempCpy->ptrData->info.ph_num);
-            tempCpy = tempCpy->next;
-            puts("\n");
-        }
-        printf("Enter your Choice: ");
+  }
+    else if (i != 1) {
+        temp = *top;
+        printf("\n>> Please, Choose one from the Following Contacts: ");
         scanf("%d", &choice);
-        tempCpy = topCpy;
-        for (int i = 0; i < choice - 1 ; i++)tempCpy = tempCpy->next;
-        toDeletePtr = tempCpy->ptrData;
-    }
-    else toDeletePtr = topCpy->ptrData;
+      while(choice <=0 || choice > i){
+           printf("\n>> Please Enter a Valid Choice:   ");
+           scanf("%d", &choice);
+  }
+      while (1) {
+        if (isSubstring(temp->info.fullName, name))
+             if (cnt == choice) break;
+             else cnt++;
+        temp = temp->next;
+}
+}
+    else temp = toDeletePtr;
     nodeptr top2 = NULL;
-    while (*top != toDeletePtr){
+    while (*top != temp){
         push(&top2, (*top)->info);
         pop(top);
     }
@@ -635,269 +845,3 @@ bool email_is_valid(char email[50]){
     if(at > dot) return 0;              //check if '@' after '.'
     return (dot != (strlen(email)) - 1); //check if dot at the end of string email
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-bool pass_valid(char a[])
-{
-        int i,m=0,c=0,s=0,d=0,p=0,w=0,l=0;
-        for(i=0;i<strlen(a);i++)
-        {
-            if(strlen(a)<8) l++;
-            if(a[i]>='A'&&a[i]<='Z')c++;
-            if(a[i]>='a'&&a[i]<='z')s++;
-            if(a[i]>='0'&&a[i]<='9') d++;
-            if(a[i]=='#'||a[i]=='*'||a[i]=='^'||
-            a[i]=='$'||a[i]=='@'||a[i]=='%'||a[i]==')'
-            ||a[i]=='(' ||a[i]=='=' ||a[i]=='!'||a[i]=='+'||
-            a[i]=='-'||a[i]=='_'||a[i]=='/'
-            ||a[i]=='}'||a[i]=='\\'||a[i]=='{') p++;
-            if(a[i]==' ') w++;
-        }
-        if(l!=0)
-        {
-            printf("\n>>Password Must be at least eight characters.");
-                m=1;
-        }
-        if(c==0)
-        {
-        printf("\n>>Password Must contain at least oneUppercase character.");
-        m=1;
-        }
-        if(s==0)
-        {
-            printf("\n>>Password Must contain at least OneLowerCase character.");
-            m=1;
-        }
-        if(p==0)
-        {
-            printf("\n>>Password Must contain at least one SpecialCase Character.");
-            m=1;
-        }
-        if(w!=0)
-        {
-            printf("\n>>Password Mustn't contain White Spaces.");
-            m=1;
-        }
-        if(d==0)
-        {
-            printf("\n>>Password Must contain at least one digit.");
-            m=1;
-        }
-        puts("\n");
-        if(m==1){
-            return false;
-        }
-        else{
-            return true;
-        }
-}
-
-
