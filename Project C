@@ -155,7 +155,7 @@ void signUp() {
     printf(">> Enter The Confirm Password: ");
     scanf("%s", data.confPass);
     while (1) {
-        if (strcmp(data.confPass, data.pass) != 0){;
+        if (strcmp(data.confPass, data.pass) != 0){
         printf("\n>> The Confirm Password doesn't match, please try again: ");
         printf("\n>> Enter The Confirm Password: ");
         scanf("%s", data.confPass);
